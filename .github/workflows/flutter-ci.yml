@@ -17,6 +17,9 @@ jobs:
   analyze-and-test:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: ./app
     
     steps:
     - uses: actions/checkout@v4
@@ -60,6 +63,9 @@ jobs:
     needs: analyze-and-test
     runs-on: ubuntu-latest
     timeout-minutes: 45  # Increased timeout
+    defaults:
+      run:
+        working-directory: ./app
     
     steps:
     - name: Free Disk Space
