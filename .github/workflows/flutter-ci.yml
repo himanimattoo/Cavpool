@@ -1,0 +1,162 @@
+name: Flutter CI/CD
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+  pull_request:
+    branches: [ main ]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  analyze-and-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.35.4'
+        channel: 'stable'
+        cache: true
+        
+    - name: Cache pub dependencies
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.pub-cache
+          app/.dart_tool
+        key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-pub-
+        
+    - name: Get dependencies
+      working-directory: ./app
+      run: flutter pub get
+      
+    - name: Create .env file for analysis
+      working-directory: ./app
+      run: |
+        echo "GOOGLE_MAPS_API_KEY=placeholder" >> .env
+        echo "GOOGLE_PLACES_API_KEY=placeholder" >> .env
+      
+    - name: Analyze code
+      working-directory: ./app
+      run: flutter analyze
+      
+    - name: Run tests
+      working-directory: ./app
+      run: flutter test
+
+  build:
+    needs: analyze-and-test
+    runs-on: ubuntu-latest
+    timeout-minutes: 45  # Increased timeout
+    
+    steps:
+    - name: Free Disk Space
+      run: |
+        sudo rm -rf /usr/share/dotnet
+        sudo rm -rf /opt/ghc
+        sudo rm -rf /usr/local/share/boost
+        sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+        sudo docker system prune -af
+        echo "=== Disk space after cleanup ==="
+        df -h
+    
+    - uses: actions/checkout@v4
+    
+    - name: Setup Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'zulu'
+        java-version: '17'
+        
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.35.4'
+        channel: 'stable'
+        cache: true
+        
+    - name: Cache Gradle packages
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+          ~/.android/build-cache
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
+        
+    - name: Cache pub dependencies
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.pub-cache
+          app/.dart_tool
+        key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-pub-
+        
+    - name: Get dependencies
+      working-directory: ./app
+      run: flutter pub get
+      
+    - name: Create .env file
+      working-directory: ./app
+      run: |
+        # yamllint disable-line rule:line-length
+        echo "GOOGLE_MAPS_API_KEY=${{ secrets.GOOGLE_MAPS_API_KEY || 'your_api_key_here' }}" >> .env
+        # yamllint disable-line rule:line-length
+        echo "GOOGLE_PLACES_API_KEY=${{ secrets.GOOGLE_PLACES_API_KEY || 'your_api_key_here' }}" >> .env
+    
+    - name: Configure Gradle Memory
+      working-directory: ./app/android
+      run: |
+        # Update JVM args to use less memory for CI
+        sed -i 's/org.gradle.jvmargs=.*/org.gradle.jvmargs=-Xmx2048m -XX:MaxMetaspaceSize=512m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8/' gradle.properties
+      
+    - name: Build APK
+      working-directory: ./app
+      run: |
+        echo "=== Starting build ==="
+        df -h
+        flutter build apk --debug
+        echo "=== Build complete ==="
+        df -h
+      
+    - name: Upload APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: app-debug-${{ github.sha }}
+        path: app/build/app/outputs/flutter-apk/app-debug.apk
+        retention-days: 7
+      
+  firebase-backend:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Run tests
+      run: npm test || echo "No tests specified"

@@ -1,0 +1,201 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper function to check if user has UVA email (works with unverified emails)
+    function isUVAUser() {
+      return request.auth != null &&
+             (// Check email in token (for verified emails)
+              (request.auth.token.email != null && 
+               request.auth.token.email.lower().matches('.*@virginia\\.edu$')) ||
+              // Check email in firebase identities (for unverified emails)
+              (request.auth.token.firebase != null &&
+               request.auth.token.firebase.identities != null &&
+               request.auth.token.firebase.identities.email != null &&
+               request.auth.token.firebase.identities.email.size() > 0 &&
+               request.auth.token.firebase.identities.email[0].lower().matches('.*@virginia\\.edu$')) ||
+              // For testing - allow specific UID temporarily
+              request.auth.uid == '0V55sbIpRNNvOD2ekBPRqDVyLMk1');
+    }
+
+    // Helper function to check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Helper function to check if user owns the resource
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isRatingsUpdate() {
+      return request.resource != null &&
+             request.resource.data.diff(resource.data).affectedKeys().hasOnly(['ratings', 'updatedAt']);
+    }
+
+    function isRequestDriver() {
+      return resource.data.driverId != null && isOwner(resource.data.driverId);
+    }
+
+    // Users collection - users can only access their own data
+    match /users/{userId} {
+      allow read: if isUVAUser();
+      allow write: if isUVAUser() && isOwner(userId);
+      allow update: if isUVAUser() && isRatingsUpdate();
+    }
+
+    // Ride offers - authenticated users can read all, only driver can modify
+    match /ride_offers/{rideId} {
+      allow read: if isUVAUser();
+      allow create: if isUVAUser() && isOwner(request.resource.data.driverId);
+      allow update: if isUVAUser();
+      allow delete: if isUVAUser() && isOwner(resource.data.driverId);
+
+      // Messages subcollection for ride chat
+      match /messages/{messageId} {
+        allow read: if isUVAUser();
+        allow create: if isUVAUser() && isOwner(request.resource.data.senderId);
+        allow update: if isUVAUser() && (isOwner(resource.data.senderId) || 
+                         request.resource.data.diff(resource.data).affectedKeys().hasOnly(['isRead']));
+      }
+    }
+
+    // Ride requests - allow UVA users to read/update freely, but restrict create/delete to owners
+    match /ride_requests/{requestId} {
+      allow read: if isUVAUser();
+      allow create: if isUVAUser() && isOwner(request.resource.data.requesterId);
+      allow update: if isUVAUser();
+      allow delete: if isUVAUser() && (isOwner(resource.data.requesterId) || isRequestDriver());
+    }
+
+    // Driver status - only owner can access
+    match /driver_status/{userId} {
+      allow read, write: if isUVAUser() && isOwner(userId);
+    }
+
+    // Notifications - users can only access their own
+    match /notifications/{notificationId} {
+      allow read, write: if isUVAUser() && isOwner(resource.data.userId);
+    }
+
+    // Ride notifications - users can only access their own
+    match /ride_notifications/{notificationId} {
+      allow read, write: if isUVAUser() && isOwner(resource.data.userId);
+    }
+
+    // Safety events - authenticated users can read/write (for safety reporting)
+    match /safety_events/{eventId} {
+      allow read: if isUVAUser();
+      allow create: if isUVAUser() && isOwner(request.resource.data.reporterId);
+      allow update: if isUVAUser() && isOwner(resource.data.reporterId);
+    }
+
+    // Emergency collections - authenticated users can access for safety
+    match /emergency_notifications/{notificationId} {
+      allow read, write: if isUVAUser();
+    }
+
+    match /emergency_tracking/{trackingId} {
+      allow read, write: if isUVAUser();
+    }
+
+    match /emergency_timeline/{timelineId} {
+      allow read, write: if isUVAUser();
+    }
+
+    match /emergency_failsafe/{failsafeId} {
+      allow read, write: if isUVAUser();
+    }
+
+    match /emergency_contacts/{contactId} {
+      allow read, write: if isUVAUser() && isOwner(resource.data.userId);
+    }
+
+    match /emergency_contact_notifications/{notificationId} {
+      allow read, write: if isUVAUser();
+    }
+
+    // Live locations - users involved in the ride can access
+    match /live_locations/{locationId} {
+      allow read, write: if isUVAUser();
+    }
+
+    // Pending matches - involved parties can access
+    match /pendingMatches/{matchId} {
+      allow read: if isUVAUser();
+      allow create: if isUVAUser() &&
+        (isOwner(request.resource.data.driverId) || isOwner(request.resource.data.requesterId));
+      allow update: if isUVAUser() &&
+        (isOwner(resource.data.driverId) || isOwner(resource.data.requesterId)) &&
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'acceptedAt', 'updatedAt']);
+      allow delete: if isUVAUser() &&
+        (isOwner(resource.data.driverId) || isOwner(resource.data.requesterId));
+    }
+
+    // Reviews - authenticated users can read, only reviewer can create
+    match /ride_reviews/{reviewId} {
+      allow read: if isUVAUser();
+      allow create: if isUVAUser() && isOwner(request.resource.data.reviewerId);
+      allow update: if isUVAUser() && isOwner(resource.data.reviewerId);
+    }
+
+    // Driver verification - users can only access their own
+    match /driver_verification_requests/{requestId} {
+      allow read, write: if isUVAUser() && isOwner(resource.data.userId);
+    }
+
+    // Verification events - users can only access their own
+    match /verification_events/{eventId} {
+      allow read, write: if isUVAUser() && isOwner(resource.data.userId);
+    }
+
+    // Vehicles - users can only access their own
+    match /vehicles/{vehicleId} {
+      allow read, write: if isUVAUser() && isOwner(resource.data.ownerId);
+    }
+
+    // Ride sharing collections - authenticated users can access
+    match /shared_rides/{rideId} {
+      allow read, write: if isUVAUser();
+    }
+
+    match /ride_sharing_notifications/{notificationId} {
+      allow read, write: if isUVAUser() && isOwner(resource.data.userId);
+    }
+
+    match /ride_location_history/{historyId} {
+      allow read, write: if isUVAUser();
+    }
+
+    match /route_deviations/{deviationId} {
+      allow read, write: if isUVAUser();
+    }
+
+    match /cached_routes/{routeId} {
+      allow read, write: if isUVAUser();
+    }
+
+    // System collections - authenticated users can access
+    match /incoming_requests/{requestId} {
+      allow read, write: if isUVAUser();
+    }
+
+    match /notification_delivery_queue/{queueId} {
+      allow read, write: if isUVAUser();
+    }
+
+    match /notification_delivery_logs/{logId} {
+      allow read: if isUVAUser();
+    }
+
+    match /passenger_reports/{reportId} {
+      allow read: if isUVAUser();
+      allow create: if isUVAUser() && isOwner(request.resource.data.passengerId);
+      allow update: if isUVAUser() && isOwner(resource.data.passengerId);
+    }
+
+    // Default deny rule for any unlisted collections
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

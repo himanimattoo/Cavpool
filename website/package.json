@@ -1,0 +1,28 @@
+{
+  "name": "cavpool-website",
+  "version": "1.0.0",
+  "description": "Official website for Cavpool - Safe Campus Transportation",
+  "main": "index.html",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "echo 'Static site with API - no build needed'",
+    "start": "npx serve .",
+    "deploy": "vercel --prod"
+  },
+  "dependencies": {
+    "stripe": "^14.21.0",
+    "firebase-admin": "^12.0.0"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "ridesharing",
+    "campus",
+    "transportation",
+    "safety",
+    "students"
+  ],
+  "author": "Cavpool Team",
+  "license": "MIT"
+}

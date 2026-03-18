@@ -1,0 +1,16 @@
+{
+  "name": "capstone-orange-1",
+  "version": "1.0.0",
+  "description": "Capstone project with Firebase backend",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "firebase": "^12.2.1",
+    "firebase-admin": "^13.5.0",
+    "stripe": "^19.2.0",
+    "vercel": "^48.6.7"
+  }
+}

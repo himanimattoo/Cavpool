@@ -1,0 +1,18 @@
+{
+  "name": "cavpool-api",
+  "version": "1.0.0",
+  "description": "Vercel API routes for UVA Cavpool Stripe integration",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "echo 'No build needed'",
+    "deploy": "vercel"
+  },
+  "dependencies": {
+    "stripe": "^14.21.0",
+    "firebase-admin": "^12.0.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

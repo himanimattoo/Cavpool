@@ -1,0 +1,7 @@
+Use this file for any general feature updates or other items that we can take about for days 
+that we are presenting.
+
+9/17
+- Created Github repo, ensured all group members joined
+- Solidified feature list
+- Began developing sprint report based on current features we are planning to implement

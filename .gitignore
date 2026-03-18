@@ -1,0 +1,52 @@
+# Node modules
+node_modules/
+
+# Claude
+.claude
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Firebase
+.firebase/
+firebase-debug.log
+firestore-debug.log
+
+# IDE
+.vscode/
+.idea/
+
+# Flutter SDK (should not be in project)
+flutter/
+
+# OS
+.DS_Store
+Thumbs.db
+APPLE_REVIEW_FIXES.md
+
+
+#Stripe
+STRIPE_INTEGRATION_GUIDE.md
+app/STRIPE_IDENTITY_SETUP.md
+app/STRIPE_INTEGRATION_COMPLETE.md
+VERCEL_DEPLOYMENT_GUIDE.md
+.vercel
+SAFETY_SYSTEM_README.md
+remaining_todos.txt
+GITHUB_ISSUES_RECOMMENDATIONS.md
+create_remaining_issues.sh
+app/pubspec.yaml
+app/pubspec.yaml
+errors.txt
+app/scripts/serviceAccountKey.json

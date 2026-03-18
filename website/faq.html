@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ - Cavpool</title>
+    <meta name="description" content="Frequently asked questions about Cavpool's safe campus transportation service.">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .faq-section {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .faq-item {
+            margin-bottom: 1.5rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .faq-question {
+            background: #f8f9fa;
+            padding: 1rem;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .faq-question:hover {
+            background: #e9ecef;
+        }
+        .faq-answer {
+            padding: 1rem;
+            display: none;
+            border-top: 1px solid #ddd;
+        }
+        .faq-answer.active {
+            display: block;
+        }
+        .faq-toggle {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+        .faq-toggle.active {
+            transform: rotate(180deg);
+        }
+        .faq-category {
+            margin-bottom: 2rem;
+        }
+        .faq-category h3 {
+            color: #FF9500;
+            border-bottom: 2px solid #FF9500;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="nav-container">
+                <div class="logo">
+                    <h1>🏊 Cavpool</h1>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="faq.html" class="active">FAQ</a></li>
+                    <li><a href="privacy.html">Privacy</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h2>Frequently Asked Questions</h2>
+                <p>Find answers to common questions about Cavpool's campus transportation service.</p>
+            </div>
+        </section>
+
+        <section class="faq-section">
+            <div class="faq-category">
+                <h3>Getting Started</h3>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        What is Cavpool?
+                        <span class="faq-toggle">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Cavpool is a specialized ridesharing platform designed specifically for university students and campus communities. We connect riders with verified drivers from the same university, creating a safer and more trusted transportation network than traditional rideshare services.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        Who can use Cavpool?
+                        <span class="faq-toggle">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Cavpool is available to verified university students, faculty, and staff. Currently, we're operating at the University of Virginia, with plans to expand to other universities. All users must be at least 18 years old and provide valid university credentials for verification.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        How do I sign up?
+                        <span class="faq-toggle">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Download the Cavpool app (coming soon), create an account using your university email, and complete the verification process. You'll need to provide your student/faculty ID and may need to complete additional verification steps depending on whether you want to be a rider, driver, or both.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        Is Cavpool free to use?
+                        <span class="faq-toggle">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Cavpool is free to download and sign up. Riders pay for individual rides, with pricing designed to be affordable for students. Drivers earn money by providing rides. We charge a small service fee to maintain the platform and safety features.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-category">
+                <h3>Safety & Security</h3>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        How does Cavpool ensure rider safety?
+                        <span class="faq-toggle">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Safety is our top priority. We require university verification for all users, conduct background checks on drivers, provide real-time GPS tracking, allow emergency contact notifications, and maintain 24/7 support. All rides are tracked and users can rate their experience.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        What verification is required for drivers?
+                        <span class="faq-toggle">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Drivers must provide university verification, valid driver's license, current vehicle registration, proof of insurance, and pass a background check. Vehicle inspections may also be required. We continuously monitor driver ratings and feedback.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        Can I add emergency contacts?
+                        <span class="faq-toggle">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes! You can add multiple emergency contacts who can be automatically notified when you're on a ride. They'll receive your ride details and can track your location in real-time for added peace of mind.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        What should I do if I feel unsafe during a ride?
+                        <span class="faq-toggle">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Use the in-app emergency button to immediately contact your emergency contacts and our support team. You can also call 911 if necessary. All rides are GPS tracked, so we can locate you quickly. Report any safety concerns immediately through the app or by emailing security@cavpool.app.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-category">
+                <h3>Using the Service</h3>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        How do I request a ride?
+                        <span class="faq-toggle">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Open the Cavpool app, enter your pickup and destination locations, choose your preferred ride time, and request a ride. You'll be matched with a verified driver from your university community. You can see driver details and estimated arrival time.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        Can I schedule rides in advance?
+                        <span class="faq-toggle">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes! You can schedule rides up to 24 hours in advance. This is especially useful for airport trips, early morning classes, or planned events. Advanced scheduling helps ensure driver availability.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        What if I need to cancel my ride?
+                        <span class="faq-toggle">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>You can cancel rides through the app. Cancellation policies vary based on timing - free cancellation is usually available until a few minutes before pickup. Late cancellations may incur a small fee to compensate drivers for their time.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        Can I share rides with friends?
+                        <span class="faq-toggle">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Absolutely! You can add friends to your ride when booking. This helps split costs and is more environmentally friendly. All passengers must be verified Cavpool users.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-category">
+                <h3>Payments & Pricing</h3>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        How much do rides cost?
+                        <span class="faq-toggle">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Pricing is designed to be student-friendly and competitive with other transportation options. Costs vary based on distance, time of day, and demand. You'll see the exact price before confirming your ride. We aim to keep prices affordable for student budgets.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        What payment methods are accepted?
+                        <span class="faq-toggle">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>We accept all major credit and debit cards through our secure payment processor (Stripe). Digital wallets like Apple Pay and Google Pay are also supported. All transactions are encrypted and secure.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        Do I need to tip drivers?
+                        <span class="faq-toggle">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Tipping is optional but appreciated. You can add a tip through the app after your ride. Our pricing is designed to fairly compensate drivers, but tips are a great way to show appreciation for excellent service.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-category">
+                <h3>For Drivers</h3>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        How do I become a Cavpool driver?
+                        <span class="faq-toggle">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Apply through the Cavpool app by providing your university verification, driver's license, vehicle information, insurance proof, and complete a background check. You'll also need to pass our driver training program and vehicle inspection.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        How much can I earn as a driver?
+                        <span class="faq-toggle">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Earnings vary based on how often you drive, time of day, and distance of trips. Drivers keep the majority of each fare, with Cavpool taking a small service fee. Peak times (evenings, weekends) typically offer higher earning potential.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        What are the vehicle requirements?
+                        <span class="faq-toggle">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Vehicles must be in good condition, pass safety inspection, have current registration and insurance, and accommodate at least 3 passengers. Age requirements vary by location but generally vehicles should be less than 15 years old.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-category">
+                <h3>Technical Support</h3>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        What if the app isn't working properly?
+                        <span class="faq-toggle">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Try restarting the app or your device first. If problems persist, contact our support team at support@cavpool.app or through the in-app support feature. Include details about your device and the specific issue you're experiencing.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        Is Cavpool available on both iOS and Android?
+                        <span class="faq-toggle">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes! Cavpool will be available on both iOS and Android devices. We're currently in development and will announce availability dates soon. Follow our updates for the latest information.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        How do I update my account information?
+                        <span class="faq-toggle">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Access your profile through the app settings to update personal information, payment methods, emergency contacts, and preferences. Some changes (like university affiliation) may require additional verification.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contact-cta">
+                <h3>Still have questions?</h3>
+                <p>Can't find what you're looking for? Our support team is here to help!</p>
+                <a href="contact.html" class="btn primary">Contact Support</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Cavpool</h3>
+                    <p>Safe campus transportation for students</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="terms.html">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Cavpool. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleFAQ(element) {
+            const answer = element.nextElementSibling;
+            const toggle = element.querySelector('.faq-toggle');
+            
+            // Close all other open FAQ items
+            document.querySelectorAll('.faq-answer.active').forEach(item => {
+                if (item !== answer) {
+                    item.classList.remove('active');
+                    item.previousElementSibling.querySelector('.faq-toggle').classList.remove('active');
+                }
+            });
+            
+            // Toggle current item
+            answer.classList.toggle('active');
+            toggle.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>

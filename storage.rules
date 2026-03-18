@@ -1,0 +1,57 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Helper function to check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Helper function to check if email is from UVA domain
+    function isUVAEmail() {
+      return request.auth.token.email.matches('.*@virginia\\.edu$');
+    }
+
+    // Helper function to check file size (max 5MB)
+    function validFileSize() {
+      return request.resource.size < 5 * 1024 * 1024;
+    }
+
+    // Helper function to check if file is an image
+    function isImage() {
+      return request.resource.contentType.matches('image/.*');
+    }
+
+    // User profile pictures
+    match /users/{userId}/profile/{fileName} {
+      allow read: if isAuthenticated() && isUVAEmail();
+      allow write: if isAuthenticated() && isUVAEmail()
+        && request.auth.uid == userId
+        && isImage()
+        && validFileSize();
+    }
+
+    // Vehicle photos for drivers
+    match /vehicles/{userId}/{fileName} {
+      allow read: if isAuthenticated() && isUVAEmail();
+      allow write: if isAuthenticated() && isUVAEmail()
+        && request.auth.uid == userId
+        && isImage()
+        && validFileSize();
+    }
+
+    // Verification documents (driver's license, student ID, etc.)
+    match /verification/{userId}/{fileName} {
+      allow read: if isAuthenticated() && isUVAEmail()
+        && request.auth.uid == userId;
+      allow write: if isAuthenticated() && isUVAEmail()
+        && request.auth.uid == userId
+        && validFileSize();
+    }
+
+    // Default deny rule
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}
